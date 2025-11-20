@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Interest Calculator</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f6f6f6;
+        padding: 40px;
+    }
+    .container {
+        max-width: 450px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+        font-weight: bold;
+        display: block;
+        margin-top: 15px;
+    }
+    input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        font-size: 16px;
+    }
+    button {
+        width: 100%;
+        margin-top: 20px;
+        padding: 12px;
+        font-size: 18px;
+        background: black;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    .results {
+        margin-top: 20px;
+        padding: 15px;
+        background: #fafafa;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Interest Calculator</h2>
+
+    <label>APY (%)</label>
+    <input type="number" id="apy" placeholder="Example: 4.5">
+
+    <label>Monthly Contribution ($)</label>
+    <input type="number" id="monthly" placeholder="Example: 100">
+
+    <label>Number of Months</label>
+    <input type="number" id="months" placeholder="Example: 12">
+
+    <button onclick="calculate()">Calculate</button>
+
+    <div class="results" id="results"></div>
+</div>
+
+<script>
+function calculate() {
+    let apy = parseFloat(document.getElementById("apy").value) / 100;
+    let monthly = parseFloat(document.getElementById("monthly").value);
+    let months = parseInt(document.getElementById("months").value);
+
+    if (isNaN(apy) || isNaN(monthly) || isNaN(months)) {
+        document.getElementById("results").innerHTML = "Please fill in all fields.";
+        return;
+    }
+
+    let monthlyRate = apy / 12;
+    let balance = 0;
+    let totalContributions = 0;
+
+    for (let i = 0; i < months; i++) {
+        balance += monthly;            // contribute
+        totalContributions += monthly;
+        balance *= (1 + monthlyRate);  // apply interest
+    }
+
+    let interestEarned = balance - totalContributions;
+
+    document.getElementById("results").innerHTML = `
+        <p><strong>Total Contributions:</strong> $${totalContributions.toFixed(2)}</p>
+        <p><strong>Interest Earned:</strong> $${interestEarned.toFixed(2)}</p>
+        <p><strong>Final Balance:</strong> $${balance.toFixed(2)}</p>
+    `;
+}
+</script>
+
+</body>
+</html>
